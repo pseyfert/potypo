@@ -9,6 +9,8 @@ Installation
 ------------
 
 potypo is available via ``pip3 install potypo``
+Note that this is not considered stable and might be subject to massive
+changes. Please do use it, and report any problems encountered :)
 
 Configuration
 -------------
@@ -24,7 +26,7 @@ This is an example configuration for potypo.
 
     [potypo]
     # This is the default language of the application, and the language that is
-    # translated from. It follows the locale tag naming scheme
+    # translated from. It follows the locale tag naming scheme.
     default_language = en_US
 
     # This is the directory that contains the .po-files.
@@ -39,11 +41,14 @@ This is an example configuration for potypo.
     # They should be named according to the language they belong to in the format
     # <lang>.txt, i.e. for the language "en_US", the file should be named
     # "en_US.txt".
-    ignores_dir = /path/to/my/projects/ignorelists
+    # They can also be placed in the language- or .po-file-directory
+    wl_dir = /path/to/my/projects/wordlists
 
-    # BUILD_DIR is the directory that the output-files should be written to.
-    # If empty or not present, the output will only be written to stdout.
-    build_dir = /path/to/my/projects/_builddir
+    # For easy CI-Integration, potypo will issue an exit(1) if any errors have been encountered.
+    # If there are languages for which this is not wanted, they should be added to this list.
+    no_fail =
+        fr
+        pt_BR
 
     # Because of how the spell-checking work, some words might be output as "wrong",
     # even though they are correctly spelled. This will for example happen to
@@ -71,11 +76,26 @@ This is an example configuration for potypo.
     chunkers = enchant.tokenize.HTMLChunker
     filters = PythonFormatFilter,enchant.tokenize.URLFilter,HTMLFilter
 
+Running the tests
+-------------
+
+::
+
+    pip install pytest
+    python setup.py install
+
+    pytest
+
+
 Current Work:
 -------------
-* if typo: exit 1
-* add config option for languages that should not fail
 * enhance README
 * find .po-files recursively?
 * move this list to issues
-* write tests
+* finish setting up testsetup
+
+  * change .po-files
+  * set up setup.cfg
+  * find out how to start potypo correctly
+
+* prioritizing the best dict per language
